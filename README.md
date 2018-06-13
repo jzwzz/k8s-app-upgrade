@@ -1,0 +1,129 @@
+测试k8s滚动更新
+======================
+
+启动项目
+---
+    
+    ./gradlew bootrun
+
+
+编译
+---
+    
+    ./gradlew build
+    
+    
+    
+    docker build .    
+        
+    docker images    
+    
+    docker tag 65fb3004c71a k8s-app-upgrade:1.0
+    
+    docker images    
+
+
+    docker tag 1537957027e5 k8s-app-upgrade:1.1
+
+
+url
+---
+
+    
+
+========================
+不能访问？？？为啥啊？
+
+
+Svc 创建后不能访问，去掉端口？
+
+
+
+
+问题排查：
+
+Step1 检查POD端口是否能正常访问
+===============================
+
+- 查看pods
+    
+  
+    kubectl get pods -o wide
+
+- 登录到一个pod上
+    
+  
+    kubectl exec k8s-app-upgrade-59657c9b6b-lz9xt -ti sh
+
+- 检查是否能成功访问另外一个pods的地址和Pod端口
+
+  
+    wget http://10.2.36.24:8200?delay=2
+    
+    
+    
+Step2 检查通过Service的Selector是否正常查询到Pod
+===============================
+
+- 通过labels查询Pods
+
+
+    kubectl get pods -l app=k8s-app-upgrade -o wide
+
+    
+    注意：在pod查询时，尽量避免使用name标签
+    （对吗？）name标签会被加上随机数覆盖： k8s-app-upgrade-59657c9b6b-lz9xt
+    
+    
+Test Case 
+===    
+   case 1 增加一个POD
+   
+       kubectl scale --replicas=1 deployment/k8s-app-upgrade 
+
+   case 2 减少一个POD  （2个减少到1个）
+                 
+       没有负载时，一会就停止了
+        
+       有运行中的任务未完成；
+   
+       有负载时，停止了一个POD后，在另外一个POD上重试了。浏览器重试的？还是应用重试的？ 
+  
+       无运行中的任务，打开页面后，在线重新新请求，
+   case 3 滚动升级POD
+   
+   case 4 POD线程终端，重启；
+   
+   case 5 有2个POD，异常终止了一个；
+   case 6 有1个POD，异常退出了。
+   
+   
+   TODO
+    加入session，shiro等等。
+    
+   
+升级步骤
+===
+前置条件：
+    
+    每个服务至少有2个POD在运行
+    
+    
+    未配置健康检查：2000个请求，20个并发，每个并发访问100次，结果：945个请求成功；
+    2000 945 / 1055
+    
+    
+    NextAction:
+        
+    配置健康检查，
+        没有失败。
+    
+1.
+    
+k8s-app-upgrade-56b7f656dd-2gv9t   1/1       Running   0          5m
+k8s-app-upgrade-56b7f656dd-lmq2t   1/1       Running   0          7m
+k8s-app-upgrade-5cb6cc5b8c-wc67r   0/1       Running   0          1m
+   
+   
+   
+   
