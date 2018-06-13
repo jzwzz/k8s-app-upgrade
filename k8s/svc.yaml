@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: k8s-app-upgrade
+  labels:
+    name: k8s-app-upgrade
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30009
+    targetPort: 8200
+    port: 8200
+  selector:
+    app: k8s-app-upgrade

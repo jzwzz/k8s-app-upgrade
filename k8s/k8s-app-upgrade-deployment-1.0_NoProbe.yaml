@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-app-upgrade
+  labels:
+    app: k8s-app-upgrade
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: k8s-app-upgrade
+  template:
+    metadata:
+      labels:
+        app: k8s-app-upgrade
+    spec:
+      containers:
+      - name: k8s-app-upgrade
+        image: k8s-app-upgrade:1.0
+        ports:
+        - containerPort: 8200
