@@ -1,7 +1,21 @@
 server:
   port: 8200
+  servlet:
+    session:
+      timeout: 36000
 spring:
   devtools:
     restart:
       enabled: true
+  security:
+    user:
+      name: user1
+      password: password1
+
+  redis:
+    host: 192.168.56.1
+    port: 6379
+
+
+
 
