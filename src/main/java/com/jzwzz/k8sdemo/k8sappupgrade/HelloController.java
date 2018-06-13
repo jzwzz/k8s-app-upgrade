@@ -1,25 +1,27 @@
 package com.jzwzz.k8sdemo.k8sappupgrade;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class HelloController {
 
 
+    private String version = "1.2.1";
+
     @RequestMapping("/")
     @ResponseBody
-    public String index(@RequestParam(name = "delay") int delay) {
+    public String index(@RequestParam(name = "delay", defaultValue = "0") int delay) {
 
-        String version = "v1.0";
+
         for (int i = 0; i < delay; i++) {
             try {
                 Thread.sleep(1000);
@@ -29,7 +31,7 @@ public class HelloController {
             System.out.println(version + ", current step: " + (i + 1) + "/" + delay);
         }
 
-        String result = "finished. " + delay;
+        String result = version + ", finished. " + delay;
         System.out.println(version + ", delay = " + delay);
 
         return result;
@@ -57,9 +59,9 @@ public class HelloController {
             list.add(i + "dump333333333333333333333333333333338");
             list.add(i + "dump333333333333333333333333333333339");
 
-            if((i % 10000) == 0){
+            if ((i % 10000) == 0) {
                 Map result = getMemoryInfo();
-                System.out.println(result.get("freeMemory") + "/" + result.get("totalMemory")  + "/" + result.get("maxMemory") );
+                System.out.println(result.get("freeMemory") + "/" + result.get("totalMemory") + "/" + result.get("maxMemory"));
             }
         }
 
@@ -71,7 +73,7 @@ public class HelloController {
     }
 
 
-    public Map getMemoryInfo(){
+    public Map getMemoryInfo() {
         Map result = new HashMap();
 
         Runtime runtime = Runtime.getRuntime();
@@ -96,7 +98,6 @@ public class HelloController {
     public Map showMemory() {
 
 
-
         return getMemoryInfo();
 
     }
@@ -110,6 +111,25 @@ public class HelloController {
     public static long byteToM(long bytes) {
         long kb = (bytes / 1024 / 1024);
         return kb;
+    }
+
+    @RequestMapping("/systemConfig")
+    @ResponseBody
+    public Map getSystemConfig() {
+
+        Map m = new HashMap();
+        m.put("a", "d");
+
+        Properties p = System.getProperties();
+        Enumeration enumeration = System.getProperties().propertyNames();
+        while (enumeration.hasMoreElements()) {
+            String name = (String) enumeration.nextElement();
+            String value = p.getProperty(name);
+
+            m.put(name, value);
+        }
+
+        return m;
     }
 
 }

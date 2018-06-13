@@ -11,7 +11,7 @@ public class ServiceClientTest {
 
     String url = "http://192.168.56.21:30009/?delay=1";
 
-    @Test
+//    @Test
     public void test001() {
 
 

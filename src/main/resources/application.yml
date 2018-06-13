@@ -11,11 +11,8 @@ spring:
     user:
       name: user1
       password: password1
-
   redis:
     host: 192.168.56.1
     port: 6379
-
-
 
 

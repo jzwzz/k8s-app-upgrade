@@ -1,6 +1,18 @@
 测试k8s滚动更新
 ======================
 
+
+============
+结论：
+    通过配置k8s滚动更新。
+    可以实现服务不间断升级；用户无感知。
+    
+    基础工作:
+        session共享；
+        配置探针readinessProbe
+
+
+
 启动项目
 ---
     
@@ -15,20 +27,23 @@
     
     
     docker build .    
-        
     docker images    
-    
-    docker tag 65fb3004c71a k8s-app-upgrade:1.0
-    
+    docker tag 65fb3004c71a k8s-app-upgrade:1.0    
     docker images    
-
-
     docker tag 1537957027e5 k8s-app-upgrade:1.1
 
+    docker build -t k8s-app-upgrade:1.2.0 .
+    docker build -t k8s-app-upgrade:1.2.1 .
+
+    docker save -o k8s-app-upgrade_1.2.1.tar k8s-app-upgrade:1.2.1
+   
+    scp k8s-app-upgrade_1.2.1.tar root@192.168.56.22:/Developer/k8s-app-upgrade/libs/release/libs
+    
+    docker load < k8s-app-upgrade_1.2.0.tar
+    docker load < k8s-app-upgrade_1.2.1.tar
 
 url
 ---
-
     
 
 ========================
@@ -124,6 +139,18 @@ k8s-app-upgrade-56b7f656dd-2gv9t   1/1       Running   0          5m
 k8s-app-upgrade-56b7f656dd-lmq2t   1/1       Running   0          7m
 k8s-app-upgrade-5cb6cc5b8c-wc67r   0/1       Running   0          1m
    
+使用2个服务，
+    登录
+    
+前面Nginx代理到另外一个节点不丢失session；
+
+
+定时任务集群化；
+    
    
    
-   
+Referfance
+
+=================
+ 
+    Spring Boot Session共享2种方式 - https://blog.csdn.net/shuiluobu/article/details/77418896
