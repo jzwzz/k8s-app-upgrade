@@ -12,13 +12,16 @@ import java.io.IOException;
 public class WebClientUtils {
 
 
-    public static String getInfo(String url){
+    //    private static int requestTimeout = 15 * 1000;
+    private final static int REQUEST_TIMOUT = 120 * 1000;
+
+    public static String getInfo(String url) {
 
         CloseableHttpClient httpCilent2 = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(15000)   //设置连接超时时间
-                .setConnectionRequestTimeout(15000) // 设置请求超时时间
-                .setSocketTimeout(15000)
+                .setConnectTimeout(REQUEST_TIMOUT)   //设置连接超时时间
+                .setConnectionRequestTimeout(REQUEST_TIMOUT) // 设置请求超时时间
+                .setSocketTimeout(REQUEST_TIMOUT)
                 .setRedirectsEnabled(true)//默认允许自动重定向
                 .build();
         HttpGet httpGet2 = new HttpGet(url);
