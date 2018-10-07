@@ -5,7 +5,7 @@ ENV JHIPSTER_SLEEP 2
 # add directly the war
 ADD *.jar /app.jar
 
-RUN sh -c 'touch /app.war'
+RUN sh -c 'touch /app.jar'
 VOLUME /tmp
 EXPOSE 8200
 CMD echo "The application will start in ${JHIPSTER_SLEEP}s..." && \

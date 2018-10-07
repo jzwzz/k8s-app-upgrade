@@ -24,16 +24,30 @@
     
     ./gradlew build
     
-    
+=========================
+
+3e10de95734a
+
+=========================    
     
     docker build .    
-    docker images    
+    docker images
+    
+    docker commit 3e10de95734a jzwzz/k8s-app-upgrade
+        
     docker tag 65fb3004c71a k8s-app-upgrade:1.0    
     docker images    
     docker tag 1537957027e5 k8s-app-upgrade:1.1
 
+    docker tag c5598a3f107a jzwzz/k8s-app-upgrade:1.3.0   
+     
+    docker tag bdc8ebee511f jzwzz/k8s-app-upgrade:1.3.1   
+
+
     docker build -t k8s-app-upgrade:1.2.0 .
     docker build -t k8s-app-upgrade:1.2.1 .
+
+    docker build -t k8s-app-upgrade:1.3.4 .
 
     docker save -o k8s-app-upgrade_1.2.1.tar k8s-app-upgrade:1.2.1
    
@@ -41,6 +55,22 @@
     
     docker load < k8s-app-upgrade_1.2.0.tar
     docker load < k8s-app-upgrade_1.2.1.tar
+
+
+
+    docker build -t jzwzz/k8s-app-upgrade:1.3.4 .
+    docker push jzwzz/k8s-app-upgrade:1.3.4
+
+
+upload to docker hub
+--
+  docker login
+  docker push jzwzz/k8s-app-upgrade:1.3.0
+  docker push jzwzz/k8s-app-upgrade:1.3.1
+  docker push jzwzz/k8s-app-upgrade:1.3.2
+  docker push jzwzz/k8s-app-upgrade:1.3.3
+
+
 
 url
 ---
@@ -116,6 +146,8 @@ Test Case
    TODO
     加入session，shiro等等。
     
+    
+    
    
 升级步骤
 ===
@@ -147,6 +179,21 @@ k8s-app-upgrade-5cb6cc5b8c-wc67r   0/1       Running   0          1m
 
 定时任务集群化；
     
+
+优雅停服务
+  1. 通过springboot-graceful-shutdown 控制进入terminal状态的时间；
+  2. 运行定时任务通过查看health状态，判断是否启动定时任务。
+
+
+========================================================
+springboot-graceful-shutdown
+
+https://github.com/SchweizerischeBundesbahnen/springboot-graceful-shutdown
+
+
+
+=======================================================-   
+   
    
    
 Referfance
@@ -154,3 +201,8 @@ Referfance
 =================
  
     Spring Boot Session共享2种方式 - https://blog.csdn.net/shuiluobu/article/details/77418896
+    
+    
+    Spring Boot 内嵌容器 Tomcat / Undertow / Jetty 优雅停机实现 - http://www.spring4all.com/article/1022
+    
+    springboot-graceful-shutdown https://github.com/SchweizerischeBundesbahnen/springboot-graceful-shutdown

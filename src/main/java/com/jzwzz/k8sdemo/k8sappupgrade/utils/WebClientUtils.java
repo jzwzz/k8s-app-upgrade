@@ -1,4 +1,4 @@
-package com.jzwzz.k8sdemo.k8sappupgrade.utils;
+package com.jzwzz.k8sdemo.k8sappupgradeclient.utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
