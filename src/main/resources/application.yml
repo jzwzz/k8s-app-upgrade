@@ -1,3 +1,6 @@
+estaGracefulShutdownWaitSeconds: 60
+
+
 server:
   port: 8200
 spring:
@@ -11,4 +14,3 @@ app:
 
 
 
-estaGracefulShutdownWaitSeconds: 60

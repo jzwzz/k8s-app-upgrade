@@ -25,6 +25,7 @@ public class ClientJob {
 
         if (!this.healthIndicator.health().getStatus().equals(Status.UP)) {
             System.out.println(">>> ClientJob.execute() not health, don't execute job.");
+            return;
         }
 
         callService();
