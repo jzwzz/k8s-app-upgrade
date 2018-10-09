@@ -182,9 +182,10 @@ k8s-app-upgrade-5cb6cc5b8c-wc67r   0/1       Running   0          1m
 
 优雅停服务
   1. 通过springboot-graceful-shutdown 控制进入terminal状态的时间；
-  2. 运行定时任务通过查看health状态，判断是否启动定时任务。
+  2. 运行定时任务通过查看health状态，判断是否启动定时任务;
 
-
+  3. 需要结合 terminationGracePeriod 参数;
+  
 ========================================================
 springboot-graceful-shutdown
 
@@ -193,6 +194,10 @@ https://github.com/SchweizerischeBundesbahnen/springboot-graceful-shutdown
 
 
 =======================================================-   
+
+ks get  deployment/ebtce-common-pay -o yaml | grep terminationGracePeriodSeconds
+
+
    
    
    
@@ -206,3 +211,5 @@ Referfance
     Spring Boot 内嵌容器 Tomcat / Undertow / Jetty 优雅停机实现 - http://www.spring4all.com/article/1022
     
     springboot-graceful-shutdown https://github.com/SchweizerischeBundesbahnen/springboot-graceful-shutdown
+    
+    Kubernetes 最佳实践：正常终止  https://www.sohu.com/a/240169564_670669
